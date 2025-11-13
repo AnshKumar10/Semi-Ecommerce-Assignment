@@ -1,7 +1,6 @@
 generator client {
-  provider        = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../app/generated/prisma"
-  engineType = "client"
 }
 
 datasource db {
@@ -11,8 +10,8 @@ datasource db {
 
 model CsvData {
   id        String   @id @default(cuid())
-  name      String   // filename or dataset name
-  data      Json     // store entire CSV as structured JSON
+  name      String // filename or dataset name
+  data      Json // store entire CSV as structured JSON
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

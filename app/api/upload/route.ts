@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { CSVDataRecord } from "@/lib/types";
 import { parseAndCleanCSV } from "@/lib/utils";
 import { NextResponse } from "next/server";

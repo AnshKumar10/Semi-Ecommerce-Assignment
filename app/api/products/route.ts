@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { groupCsvData } from "@/lib/utils";
 import { CSVDataRecord } from "@/lib/types";
 

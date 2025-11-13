@@ -1,36 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Semi-Ecommerce Website - CSV Import & Product Display
 
-## Getting Started
+A semi-ecommerce website that imports product details from CSV files and displays them in an organized manner with category and subcategory navigation.
 
-First, run the development server:
+## Features
+
+- 📤 **CSV Import**: Upload and parse CSV or files to import product data
+- 🗂️ **Category Management**: Organize products by categories and subcategories
+- 📊 **Product Display**: View products in a table format with associated columns
+- 🔍 **Smart Association**: Handles CSV rules (filled cells, empty cells, and dashes)
+- 🎨 **Modern UI**: Built with Tailwind CSS and Next.js
+
+## Prerequisites
+
+- Node.js 18+ installed
+- A NeonDB PostgreSQL database (or any PostgreSQL database)
+- npm or yarn package manager
+
+## Setup Instructions
+
+### 1. Clone and Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure Database (NeonDB)
+
+1. Create an account at [NeonDB](https://neon.tech) if you don't have one
+2. Create a new project and database
+3. Copy your connection string from the NeonDB dashboard
+4. Create a `.env` file in the root directory:
+
+```bash
+cp .env.example .env
+```
+
+5. Add your database connection string to `.env`:
+
+```env
+DATABASE_URL="postgresql://user:password@host:port/database?sslmode=require"
+```
+
+### 3. Set Up Database Schema
+
+Generate Prisma Client and run migrations:
+
+```bash
+# Generate Prisma Client
+npm run prisma:generate
+
+# Create and apply database migrations
+npm run prisma:migrate
+```
+
+### 4. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Uploading CSV Files
 
-## Learn More
+1. Click the "Upload CSV" button
+2. Select a CSV file
+3. Click "Upload" to process the file
 
-To learn more about Next.js, take a look at the following resources:
+### CSV File Format
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Your CSV file should have:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Part Number** column: Unique identifier for each product
+- **Datasheet URL** column (optional): URL to product datasheet
+- **Additional columns**: Represent categories/subcategories or product attributes
 
-## Deploy on Vercel
+#### CSV Rules:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Filled Cell**: Indicates the part number is associated with that column
+- **Empty Cell**: Indicates the part number is NOT associated with that column
+- **Dash (-)**: Although appears empty, signifies the part number IS associated with that column
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Viewing Products
+
+1. Use the cards to browse categories
+2. Click over a category to see its subcategories
+3. Click on a category or subcategory to view products
+4. Products are displayed in a table showing:
+   - Part Number
+   - Datasheet URL (if available)
+   - Associated columns (marked with ✓)
+
+## API Endpoints
+
+### POST `/api/upload`
+
+Upload and import CSV file.
+
+**Request**: FormData with `file` field
+
+**Response**:
+
+```json
+{
+  "success": true,
+  "message": "Successfully imported X rows"
+}
+```
+
+### GET `/api/products`
+
+Get all products with their columns.
+
+**Response**: Array of products with columns
+
+## Technologies Used
+
+- **Next.js 16** - React framework
+- **TypeScript** - Type safety
+- **Prisma** - ORM for database management
+- **PostgreSQL** - Database (via NeonDB)
+- **Tailwind CSS** - Styling
+- **csv-parse** - CSV file parsing
+
+## Troubleshooting
+
+### Database Connection Issues
+
+- Verify your `DATABASE_URL` in `.env` is correct
+- Ensure your NeonDB database is accessible
+- Check that SSL mode is set correctly
+
+### Import Errors
+
+- Ensure your CSV file has a "Part Number" column
+- Check that the file format is supported (.csv, .xlsx, .xls)
+- Verify file encoding (UTF-8 recommended for CSV)
+
+### Prisma Client Issues
+
+- Run `npm run prisma:generate` after schema changes
+- Ensure migrations are up to date: `npm run prisma:migrate`
+
+## License
+
+This project is open source and available for use.

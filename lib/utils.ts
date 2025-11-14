@@ -17,7 +17,7 @@ export function groupCsvData(records: CSVDataRecord[]): GroupedCsvData[] {
       groupBy(items, "Sub-category"),
       (subItems, subCategory) => ({
         subCategory,
-        parts: subItems.map((item) => {
+        parts: map(subItems, (item) => {
           const { Category, "Sub-category": _, ...rest } = item;
           return rest;
         }),
@@ -41,14 +41,14 @@ export function parseAndCleanCSV(csvText: string): CSVDataRecord[] {
     trim: true,
   });
 
-  return records.map((row: Record<string, string>): CSVDataRecord | null => {
+  return map(records, (row: Record<string, string>): CSVDataRecord => {
     const cleaned: Record<string, string> = {};
 
     for (const [key, rawValue] of Object.entries(row)) {
       const value = rawValue?.toString().trim();
 
       if (!key || key === "") continue;
-      if (value !== "" && value != null) cleaned[key] = value;
+      if (value !== "" && value !== null) cleaned[key] = value;
     }
 
     return cleaned as CSVDataRecord;

@@ -41,7 +41,7 @@ export default function CsvUploader() {
       if (!res.ok) throw new Error("Upload failed");
 
       const data = await res.json();
-      setMessage(`Upload successful: ${data.filename}`);
+      setMessage(`${data.message}, Reload the page to see the changes.`);
     } catch (error) {
       console.error(error);
       setMessage("Upload failed.");
